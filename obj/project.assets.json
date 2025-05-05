@@ -105,11 +105,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yumenna ezzat\\source\\repos\\EduTrack\\EduTrack.csproj",
+      "projectUniqueName": "C:\\Users\\yumenna ezzat\\Desktop\\EduTrack\\EduTrack.csproj",
       "projectName": "EduTrack",
-      "projectPath": "C:\\Users\\yumenna ezzat\\source\\repos\\EduTrack\\EduTrack.csproj",
+      "projectPath": "C:\\Users\\yumenna ezzat\\Desktop\\EduTrack\\EduTrack.csproj",
       "packagesPath": "C:\\Users\\yumenna ezzat\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yumenna ezzat\\source\\repos\\EduTrack\\obj\\",
+      "outputPath": "C:\\Users\\yumenna ezzat\\Desktop\\EduTrack\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
