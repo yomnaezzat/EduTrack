@@ -1,0 +1,72 @@
+@model EduTrack.Models.Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="container">
+    <h1>Course Details</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>@Model.Title</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">@Model.Description</dd>
+
+                        <dt class="col-sm-3">Price</dt>
+                        <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Material Type</dt>
+                        <dd class="col-sm-9">@Model.MaterialType</dd>
+
+                        <dt class="col-sm-3">Created At</dt>
+                        <dd class="col-sm-9">@Model.CreatedAt.ToString("g")</dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Course Material</div>
+                        <div class="card-body">
+                            @if (!string.IsNullOrEmpty(Model.MaterialUrl))
+                            {
+                                @if (Model.MaterialType == "YouTube")
+                                {
+                                    <div class="embed-responsive embed-responsive-16by9 mb-3">
+                                        <iframe class="embed-responsive-item" 
+                                                src="@(Model.MaterialUrl.Replace("watch?v=", "embed/"))" 
+                                                allowfullscreen></iframe>
+                                    </div>
+                                }
+                                else if (Model.MaterialType == "PDF")
+                                {
+                                    <a href="@Model.MaterialUrl" target="_blank" class="btn btn-primary">
+                                        <i class="bi bi-file-earmark-pdf"></i> View PDF
+                                    </a>
+                                }
+                                else
+                                {
+                                    <p>@Model.MaterialUrl</p>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted">No material available</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

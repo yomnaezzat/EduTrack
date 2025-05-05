@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EduTrack Logo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+        .logo {
+            width: 200px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0d6efd;
+            position: relative;
+            z-index: 2;
+        }
+        .logo-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: 10px;
+            background-color: #0d6efd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        .logo-icon:before {
+            content: '';
+            width: 30px;
+            height: 20px;
+            background-color: white;
+            border-radius: 3px;
+        }
+        .logo-icon:after {
+            content: 'E';
+            position: absolute;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .logo-bg {
+            position: absolute;
+            top: 5px;
+            left: 35px;
+            right: 10px;
+            bottom: 5px;
+            background-color: #f8f9fa;
+            border-radius: 50px;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <div class="logo-bg"></div>
+        <div class="logo-icon"></div>
+        <div class="logo-text">EduTrack</div>
+    </div>
+</body>
+</html>

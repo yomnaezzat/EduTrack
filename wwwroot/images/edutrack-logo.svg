@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Background Circle -->
+  <circle cx="200" cy="200" r="190" fill="#f8f9fa" stroke="#0d6efd" stroke-width="10"/>
+  
+  <!-- Book Icon -->
+  <path d="M120,120 L280,120 L280,280 L120,280 Z" fill="#ffffff" stroke="#0d6efd" stroke-width="10"/>
+  <path d="M120,120 L120,280 Q190,240 280,280 L280,120 Q190,160 120,120 Z" fill="#ffffff" stroke="#0d6efd" stroke-width="10"/>
+  <line x1="200" y1="120" x2="200" y2="280" stroke="#0d6efd" stroke-width="10"/>
+  
+  <!-- Graduation Cap -->
+  <polygon points="200,80 150,120 250,120" fill="#0d6efd"/>
+  <rect x="190" y="80" width="20" height="30" fill="#0d6efd"/>
+  
+  <!-- Text -->
+  <text x="200" y="330" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#0d6efd">EduTrack</text>
+</svg>
