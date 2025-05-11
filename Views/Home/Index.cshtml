@@ -9,14 +9,14 @@
             <p class="lead">Your go-to platform for discovering high-quality courses and educational resources.</p>
             <p>Explore a wide range of courses or create your own to share your expertise with learners worldwide.</p>
             <div class="mt-4">
-                <a asp-controller="Courses" asp-action="Index" class="btn btn-primary btn-lg me-2">Browse Courses</a>
+                <a asp-controller="CoursesMvc" asp-action="Index" class="btn btn-primary btn-lg me-2">Browse Courses</a>
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary btn-lg">Sign Up</a>
                 }
                 else
                 {
-                    <a asp-controller="Courses" asp-action="Create" class="btn btn-outline-primary btn-lg">Create Course</a>
+                    <a asp-controller="CoursesMvc" asp-action="Create" class="btn btn-outline-primary btn-lg">Create Course</a>
                 }
             </div>
         </div>

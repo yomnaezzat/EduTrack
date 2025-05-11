@@ -24,6 +24,9 @@
                 <dt class="col-sm-3">Price</dt>
                 <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
 
+                <dt class="col-sm-3">Category</dt>
+                <dd class="col-sm-9">@Model.Category</dd>
+
                 <dt class="col-sm-3">Material Type</dt>
                 <dd class="col-sm-9">@Model.MaterialType</dd>
 
@@ -33,7 +36,7 @@
         </div>
         <div class="card-footer">
             <form asp-action="Delete">
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CourseId" />
                 <button type="submit" class="btn btn-danger">Delete</button>
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </form>

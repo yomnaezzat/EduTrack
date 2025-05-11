@@ -50,7 +50,7 @@ namespace EduTrack.Controllers.Api
         [Authorize]
         public IActionResult PutCourse(int id, Course course)
         {
-            if (id != course.Id)
+            if (id != course.CourseId)
             {
                 return BadRequest();
             }
@@ -70,7 +70,7 @@ namespace EduTrack.Controllers.Api
         public ActionResult<Course> PostCourse(Course course)
         {
             _courseService.AddCourse(course);
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
 
         // DELETE: api/CoursesApi/5

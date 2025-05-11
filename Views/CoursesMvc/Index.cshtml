@@ -1,0 +1,75 @@
+@model IEnumerable<EduTrack.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<div class="container">
+    <h1>Courses</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form asp-action="Search" method="get" class="d-flex">
+                <input type="text" name="searchTerm" class="form-control me-2" placeholder="Search courses..." value="@ViewData["SearchTerm"]" />
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="Create" class="btn btn-primary">Create New Course</a>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(item.CoverImagePath))
+                    {
+                        <img src="@item.CoverImagePath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@item.Price.ToString("C")</h6>
+                        <p class="card-text">
+                            @if (item.Description != null && item.Description.Length > 100)
+                            {
+                                @(item.Description.Substring(0, 100) + "...")
+                            }
+                            else
+                            {
+                                @item.Description
+                            }
+                        </p>
+                        <p class="card-text">
+                            <span class="badge bg-primary">@item.Category</span>
+                            <small class="text-muted ms-2">Material Type: @item.MaterialType</small>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="btn-group" role="group">
+                            <a asp-action="Details" asp-route-id="@item.CourseId" class="btn btn-sm btn-outline-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.CourseId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.CourseId" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No courses found. @if (ViewData["SearchTerm"] != null) { <span>Try a different search term.</span> }
+                </div>
+            </div>
+        }
+    </div>
+</div>

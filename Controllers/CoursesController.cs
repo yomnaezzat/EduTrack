@@ -1,12 +1,14 @@
 using EduTrack.Models;
 using EduTrack.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EduTrack.Controllers
 {
-    public class CoursesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CoursesController : ControllerBase
     {
         private readonly ICourseService _courseService;
 
@@ -15,120 +17,135 @@ namespace EduTrack.Controllers
             _courseService = courseService;
         }
 
-        // GET: Courses
-        public IActionResult Index()
+        // GET: api/courses
+        [HttpGet]
+        public ActionResult<IEnumerable<Course>> GetCourses()
+        {
+            return _courseService.GetAllCourses();
+        }
+
+        // GET: api/courses/5
+        [HttpGet("{id}")]
+        public ActionResult<Course> GetCourse(int id)
+        {
+            var course = _courseService.GetCourseById(id);
+
+            if (course == null)
+            {
+                return NotFound(new { message = $"Course with ID {id} not found" });
+            }
+
+            return course;
+        }
+
+        // GET: api/courses/search
+        [HttpGet("search")]
+        public ActionResult<IEnumerable<Course>> SearchCourses(
+            string title = null, 
+            string category = null,
+            decimal? minPrice = null, 
+            decimal? maxPrice = null)
         {
             var courses = _courseService.GetAllCourses();
-            return View(courses);
-        }
 
-        // GET: Courses/Search
-        public IActionResult Search(string searchTerm)
-        {
-            var courses = _courseService.SearchCourses(searchTerm);
-            ViewData["SearchTerm"] = searchTerm;
-            return View("Index", courses);
-        }
-
-        // GET: Courses/Details/5
-        public IActionResult Details(int id)
-        {
-            var course = _courseService.GetCourseById(id);
-            if (course == null)
+            // Filter by title
+            if (!string.IsNullOrWhiteSpace(title))
             {
-                return NotFound();
+                courses = courses.Where(c => 
+                    c.Title.ToLower().Contains(title.ToLower())).ToList();
             }
 
-            return View(course);
+            // Filter by category
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                courses = courses.Where(c => 
+                    c.Category.ToLower().Contains(category.ToLower())).ToList();
+            }
+
+            // Filter by min price
+            if (minPrice.HasValue)
+            {
+                courses = courses.Where(c => c.Price >= minPrice.Value).ToList();
+            }
+
+            // Filter by max price
+            if (maxPrice.HasValue)
+            {
+                courses = courses.Where(c => c.Price <= maxPrice.Value).ToList();
+            }
+
+            return courses;
         }
 
-        // GET: Courses/Create
-        [Authorize]
-        public IActionResult Create()
+        // PUT: api/courses/5
+        [HttpPut("{id}")]
+        public IActionResult PutCourse(int id, Course course)
         {
-            return View();
+            if (id != course.CourseId)
+            {
+                return BadRequest(new { message = "ID in URL does not match ID in request body" });
+            }
+
+            if (string.IsNullOrWhiteSpace(course.Title))
+            {
+                ModelState.AddModelError("Title", "Title is required");
+            }
+
+            if (course.Price < 0)
+            {
+                ModelState.AddModelError("Price", "Price must be greater than or equal to 0");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingCourse = _courseService.GetCourseById(id);
+            if (existingCourse == null)
+            {
+                return NotFound(new { message = $"Course with ID {id} not found" });
+            }
+
+            _courseService.UpdateCourse(course);
+            return NoContent();
         }
 
-        // POST: Courses/Create
+        // POST: api/courses
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public IActionResult Create(Course course)
+        public ActionResult<Course> PostCourse(Course course)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(course.Title))
             {
-                _courseService.AddCourse(course);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("Title", "Title is required");
             }
-            return View(course);
+
+            if (course.Price < 0)
+            {
+                ModelState.AddModelError("Price", "Price must be greater than or equal to 0");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _courseService.AddCourse(course);
+            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
 
-        // GET: Courses/Edit/5
-        [Authorize]
-        public IActionResult Edit(int id)
+        // DELETE: api/courses/5
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCourse(int id)
         {
             var course = _courseService.GetCourseById(id);
             if (course == null)
             {
-                return NotFound();
-            }
-            return View(course);
-        }
-
-        // POST: Courses/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public IActionResult Edit(int id, Course course)
-        {
-            if (id != course.Id)
-            {
-                return NotFound();
+                return NotFound(new { message = $"Course with ID {id} not found" });
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _courseService.UpdateCourse(course);
-                }
-                catch (Exception)
-                {
-                    if (_courseService.GetCourseById(id) == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(course);
-        }
-
-        // GET: Courses/Delete/5
-        [Authorize]
-        public IActionResult Delete(int id)
-        {
-            var course = _courseService.GetCourseById(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return View(course);
-        }
-
-        // POST: Courses/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public IActionResult DeleteConfirmed(int id)
-        {
             _courseService.DeleteCourse(id);
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
 }
